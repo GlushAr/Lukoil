@@ -24,7 +24,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler { //test for git
+public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
     private ZXingScannerView scan;
     public static String info;
@@ -38,15 +38,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        scan = (ZXingScannerView)findViewById(R.id.zxscan);
-        _switch = (Switch)findViewById(R.id.switch1);
-        btn = (Button)findViewById(R.id.button2);
-        rescan = (Button)findViewById(R.id.btnRescan);
-        img = (ImageView)findViewById(R.id.imgLamp);
-
-        rescan.setVisibility(View.GONE);
-        btn.setClickable(false);
-        btn.setBackgroundColor(Color.rgb(209, 194, 192));
+        initUI();
 
         _switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -132,5 +124,17 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
         this.finish();
+    }
+
+    private void initUI() {
+        scan = (ZXingScannerView)findViewById(R.id.zxscan);
+        _switch = (Switch)findViewById(R.id.switch1);
+        btn = (Button)findViewById(R.id.button2);
+        rescan = (Button)findViewById(R.id.btnRescan);
+        img = (ImageView)findViewById(R.id.imgLamp);
+
+        rescan.setVisibility(View.GONE);
+        btn.setClickable(false);
+        btn.setBackgroundColor(Color.rgb(209, 194, 192));
     }
 }
