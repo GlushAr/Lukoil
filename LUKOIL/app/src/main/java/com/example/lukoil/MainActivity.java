@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         info = rawResult.getText();
         btn.setClickable(true);
         btn.setText("Tap to see the info");
-        btn.setBackgroundColor(Color.rgb(90, 145, 77));
 
         _switch.setVisibility(View.GONE);
         img.setVisibility(View.GONE);
@@ -112,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         img.setVisibility(View.VISIBLE);
         btn.setClickable(false);
         btn.setText("Scanning...");
-        btn.setBackgroundColor(Color.rgb(209, 194, 192));
 
         scan.startCamera();
 
@@ -135,6 +133,5 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         rescan.setVisibility(View.GONE);
         btn.setClickable(false);
-        btn.setBackgroundColor(Color.rgb(209, 194, 192));
     }
 }

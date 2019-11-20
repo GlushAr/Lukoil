@@ -4,17 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/background"
     tools:context="com.example.lukoil.ResultActivity">
 
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:background="#000000"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35sp"
+        android:layout_marginRight="35sp"
+        android:background="@drawable/btn_style"
         android:onClick="click"
         android:text="Again"
-        android:textColor="#FFD2233C"
+        android:textColor="#dbd5d6"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,12 +38,13 @@
         android:layout_width="match_parent"
         android:layout_height="351dp"
         android:layout_marginTop="1dp"
-        android:background="#929292"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         <TextView
+            android:textColor="#dbd5d6"
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

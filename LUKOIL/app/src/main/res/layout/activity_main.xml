@@ -5,8 +5,9 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/background"
     tools:context="com.example.lukoil.MainActivity">
+
 
     <me.dm7.barcodescanner.zxing.ZXingScannerView
         android:id="@+id/zxscan"
@@ -50,10 +51,15 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="409dp"
-        android:layout_height="105dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginLeft="20sp"
         android:onClick="click"
         android:text="Scanning..."
+        android:textColor="#dbd5d6"
+        android:background="@drawable/btn_style"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -62,10 +68,10 @@
         android:id="@+id/btnRescan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#000000"
+        android:background="@drawable/btn_style"
         android:onClick="rescan"
         android:text="Rescan"
-        android:textColor="@color/viewfinder_laser"
+        android:textColor="#dbd5d6"
         app:layout_constraintBottom_toTopOf="@+id/zxscan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
