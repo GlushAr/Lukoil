@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <shape android:shape="oval">
-            <corners android:radius="10dp" />
-        </shape>
-    </item>
-</selector>
+<vector
+    android:height="108dp"
+    android:width="108dp"
+    android:viewportHeight="10"
+    android:viewportWidth="10"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <path android:fillColor="#b52b2b"
+        android:pathData="M12,12m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0"/>
+</vector>

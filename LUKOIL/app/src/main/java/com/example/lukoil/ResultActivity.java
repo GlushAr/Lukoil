@@ -24,7 +24,7 @@ public class ResultActivity extends AppCompatActivity {
         initUI();
 
         txt.setText(MainActivity.info);
-        img.setImageResource(R.drawable.test_pic);
+        //img.setImageResource(R.drawable.test_pic);
     }
 
     public void click(View v) {

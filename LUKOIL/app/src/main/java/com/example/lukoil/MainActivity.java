@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.textclassifier.TextLinks;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -22,7 +23,14 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.io.IOException;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
@@ -87,11 +95,32 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     @Override
     public void handleResult(Result rawResult) {
 
-        info = rawResult.getText();
+        //info = rawResult.getText();
         btn.setClickable(true);
         btn.setText("Tap to see the info");
-
         _switch.setVisibility(View.GONE);
+
+        //
+        OkHttpClient client = new OkHttpClient();
+        String url = "http://185.12.29.215/croc/DataBase/" + rawResult.getText();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                info = response.body().string();
+            }
+        });
+//
+
         img.setVisibility(View.GONE);
         rescan.setVisibility(View.VISIBLE);
         scan.resumeCameraPreview(MainActivity.this);
@@ -150,3 +179,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         }
     }
 }
+
+/*
+
+*/
