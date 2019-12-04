@@ -10,10 +10,14 @@ import android.widget.TextView;
 
 import com.example.zxing.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class ResultActivity extends AppCompatActivity {
 
-    private TextView txt;
+    private TextView txt, name_info;
     private ImageView img;
+    private String name, information;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +27,7 @@ public class ResultActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         initUI();
 
-        txt.setText(MainActivity.info);
-        //img.setImageResource(R.drawable.test_pic);
+        JsonParser(MainActivity.info);
     }
 
     public void click(View v) {
@@ -36,7 +39,23 @@ public class ResultActivity extends AppCompatActivity {
 
     private void initUI() {
         txt = (TextView)findViewById(R.id.textView2);
+        name_info = (TextView)findViewById(R.id.name);
         img = (ImageView)findViewById(R.id.imageView);
+    }
+
+    private void JsonParser(String jsonInfo) {
+        try {
+            JSONObject json = new JSONObject(jsonInfo);
+            name = json.getString("TypeName");
+            information = json.getString("Produced");
+
+            name_info.setText(name);
+            txt.setText(information);
+
+        } catch (JSONException e){
+            txt. setText(e.getMessage());
+        }
+
     }
 
     @Override

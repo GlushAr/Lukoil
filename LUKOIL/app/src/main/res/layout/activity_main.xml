@@ -116,4 +116,17 @@
         app:layout_constraintVertical_bias="0.67"
         app:srcCompat="@drawable/ic_qr_code" />
 
+    <TextView
+        android:id="@+id/test_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_info"
+        android:textColor="@android:color/background_light"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.789" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -77,7 +77,7 @@
     </ScrollView>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/name"
         android:layout_width="293dp"
         android:layout_height="73dp"
         android:text="ЛУКОЙЛ GENESIS ARMORTECH VN 5W-30"

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zxing.R;
@@ -40,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     private Button btn, rescan;
     private ImageView img;
     private boolean flash_state = false;
+    private String id1, id2, id3;
+
+    private TextView txt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,37 +99,29 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     @Override
     public void handleResult(Result rawResult) {
 
-        //info = rawResult.getText();
-        btn.setClickable(true);
-        btn.setText("Tap to see the info");
-        _switch.setVisibility(View.GONE);
-
-        //
-        OkHttpClient client = new OkHttpClient();
-        String url = "http://185.12.29.215/croc/DataBase/" + rawResult.getText();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                info = response.body().string();
-            }
-        });
-//
-
-        img.setVisibility(View.GONE);
-        rescan.setVisibility(View.VISIBLE);
+        txt = (TextView)findViewById(R.id.test_info);
         scan.resumeCameraPreview(MainActivity.this);
-        scan.setFlash(false);
-        scan.stopCamera();
+
+        switch (rawResult.getText().charAt(0)) {
+            case '0':                                   //код под крышкой
+                id1 = rawResult.getText();
+                txt.setText("Под крышкой");
+                break;
+            case '1':                                   //код на крышке
+                id2 = rawResult.getText();
+                txt.setText("На крышке");
+                break;
+            case '2':                                   //код на этикетке
+                id3 = rawResult.getText();
+                txt.setText("На этикетке");
+                break;
+            default:
+                txt.setText("Ошибка");
+                break;
+        }
+
+        if(id1 != null && id2 != null && id3 != null)
+            reqResult(id1 + '.' + id2 + '.' + id3);
     }
 
     public void click(View view) {
@@ -177,6 +173,42 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
+    }
+
+    private void reqResult(String id){
+        btn.setClickable(true);
+        btn.setText("Tap to see the info");
+        _switch.setVisibility(View.GONE);
+
+
+        OkHttpClient client = new OkHttpClient();
+        String url = "http://185.12.29.215/croc/DataBase/" + id;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                info = response.body().string();
+            }
+        });
+
+
+
+        id1 = id2 = id3 = null;
+
+        img.setVisibility(View.GONE);
+        rescan.setVisibility(View.VISIBLE);
+        scan.resumeCameraPreview(MainActivity.this);
+        scan.setFlash(false);
+        scan.stopCamera();
     }
 }
 
