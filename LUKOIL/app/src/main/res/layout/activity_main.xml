@@ -22,35 +22,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.225" />
 
-    <Switch
-        android:id="@+id/switch1"
-        android:layout_width="96dp"
-        android:layout_height="18dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
-        android:scaleX="2"
-        android:scaleY="2"
-        android:textColorHighlight="#5a914d"
-        android:textColorLink="@color/design_default_color_primary_dark"
-        app:layout_constraintBottom_toTopOf="@+id/zxscan"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:checked="false" />
-
-    <ImageView
-        android:id="@+id/imgLamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        app:layout_constraintBottom_toTopOf="@+id/zxscan"
-        app:layout_constraintEnd_toEndOf="@+id/switch1"
-        app:layout_constraintHorizontal_bias="0.624"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/light_off" />
-
     <Button
         android:id="@+id/button2"
         android:layout_width="match_parent"
@@ -128,5 +99,58 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.789" />
+
+    <ImageButton
+        android:id="@+id/flash"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="88dp"
+        android:layout_height="72dp"
+        android:background="#00924B4B"
+        android:onClick="flash_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_flash_off" />
+
+    <ImageView
+        android:id="@+id/ima0"
+        android:layout_width="52dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="384dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/arm_vn_4l_kanistra_rakurs_230x395" />
+
+    <ImageView
+        android:id="@+id/ima1"
+        android:layout_width="52dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="384dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3"
+        app:srcCompat="@drawable/arm_vn_4l_kanistra_rakurs_230x395" />
+
+    <ImageView
+        android:id="@+id/ima2"
+        android:layout_width="52dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="384dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.613"
+        app:srcCompat="@drawable/arm_vn_4l_kanistra_rakurs_230x395" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

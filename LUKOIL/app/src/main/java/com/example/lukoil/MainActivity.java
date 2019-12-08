@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.textclassifier.TextLinks;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -23,9 +24,9 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.io.IOException;
-
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -37,13 +38,12 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
     private ZXingScannerView scan;
     public static String info;
-    private Switch _switch;
     private Button btn, rescan;
-    private ImageView img;
+    private ImageButton flash;
     private boolean flash_state = false;
     private String id1, id2, id3;
-
     private TextView txt;
+    private ImageView ima0, ima1, ima2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,21 +52,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         initUI();
-
-        _switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked) {
-                    flash_state = false;
-                    scan.setFlash(false);
-                    img.setImageResource(R.drawable.light_off);
-                } else {
-                    flash_state = true;
-                    scan.setFlash(true);
-                    img.setImageResource(R.drawable.light_on);
-                }
-            }
-        });
 
         Dexter.withActivity(this)
                 .withPermission(Manifest.permission.CAMERA)
@@ -98,30 +83,41 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
     @Override
     public void handleResult(Result rawResult) {
-
-        txt = (TextView)findViewById(R.id.test_info);
+        String res = rawResult.getText();
+        txt.setText(res);
         scan.resumeCameraPreview(MainActivity.this);
+        if (res.length() == 36) {
+            switch (res.charAt(0)) {
+                case '0':                                   //код под крышкой
+                    id1 = res;
+                    ima0.setVisibility(View.GONE);
+                    txt.setText("Под крышкой");
+                    break;
+                case '1':                                   //код на крышке
+                    id2 = res;
+                    ima1.setVisibility(View.GONE);
+                    txt.setText("На крышке");
+                    break;
+                case '2':                                   //код на этикетке
+                    id3 = res;
+                    ima2.setVisibility(View.GONE);
+                    txt.setText("На этикетке");
+                    break;
+                default:
+                    txt.setText("Ошибка");
+                    break;
+            }
+        } else
+            txt.setText("Ошибка");
 
-        switch (rawResult.getText().charAt(0)) {
-            case '0':                                   //код под крышкой
-                id1 = rawResult.getText();
-                txt.setText("Под крышкой");
-                break;
-            case '1':                                   //код на крышке
-                id2 = rawResult.getText();
-                txt.setText("На крышке");
-                break;
-            case '2':                                   //код на этикетке
-                id3 = rawResult.getText();
-                txt.setText("На этикетке");
-                break;
-            default:
-                txt.setText("Ошибка");
-                break;
-        }
-
-        if(id1 != null && id2 != null && id3 != null)
+        if(id1 != null && id2 != null && id3 != null) {
+            flash.setVisibility(View.GONE);
+            rescan.setVisibility(View.VISIBLE);
+            scan.resumeCameraPreview(MainActivity.this);
+            scan.setFlash(false);
+            scan.stopCamera();
             reqResult(id1 + '.' + id2 + '.' + id3);
+        }
     }
 
     public void click(View view) {
@@ -133,8 +129,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
     public void rescan(View view) {
         rescan.setVisibility(View.GONE);
-        _switch.setVisibility(View.VISIBLE);
-        img.setVisibility(View.VISIBLE);
+        flash.setVisibility(View.VISIBLE);
         btn.setClickable(false);
         btn.setText("Scanning...");
 
@@ -142,6 +137,23 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         if(flash_state)
             scan.setFlash(true);
+        //
+        ima0.setVisibility(View.VISIBLE);
+        ima1.setVisibility(View.VISIBLE);
+        ima2.setVisibility(View.VISIBLE);
+        //
+    }
+
+    public void flash_btn(View view){
+        if(flash_state){
+            flash.setImageResource(R.drawable.ic_flash_off);
+            scan.setFlash(false);
+            flash_state = false;
+        } else {
+            flash.setImageResource(R.drawable.ic_flash_on);
+            scan.setFlash(true);
+            flash_state = true;
+        }
     }
 
     @Override
@@ -152,11 +164,16 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
     private void initUI() {
         scan = (ZXingScannerView)findViewById(R.id.zxscan);
-        _switch = (Switch)findViewById(R.id.switch1);
         btn = (Button)findViewById(R.id.button2);
         rescan = (Button)findViewById(R.id.btnRescan);
-        img = (ImageView)findViewById(R.id.imgLamp);
+        flash = (ImageButton)findViewById(R.id.flash);
 
+        //
+        txt = (TextView)findViewById(R.id.test_info);
+        ima0 = findViewById(R.id.ima0);
+        ima1 = findViewById(R.id.ima1);
+        ima2 = findViewById(R.id.ima2);
+        //
         rescan.setVisibility(View.GONE);
         btn.setClickable(false);
     }
@@ -176,11 +193,8 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     }
 
     private void reqResult(String id){
-        btn.setClickable(true);
-        btn.setText("Tap to see the info");
-        _switch.setVisibility(View.GONE);
 
-
+        id1 = id2 = id3 = null;
         OkHttpClient client = new OkHttpClient();
         String url = "http://185.12.29.215/croc/DataBase/" + id;
 
@@ -190,25 +204,30 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
+            public void onResponse(Call call, Response response) throws IOException {
+                info = response.body().string();
+
+                try {
+                    JSONObject json = new JSONObject(info);
+                    json.getString("TypeName");
+                    //
+                    btn.setClickable(true);
+                    btn.setText("Tap to see the info");
+                } catch (JSONException e){
+                    btn.setText("Error");
+                    btn.setClickable(false);
+                }
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                info = response.body().string();
+            public void onFailure(Call call, IOException e) {
+                txt.setText("Bad connection");
             }
         });
+        /* error
 
 
-
-        id1 = id2 = id3 = null;
-
-        img.setVisibility(View.GONE);
-        rescan.setVisibility(View.VISIBLE);
-        scan.resumeCameraPreview(MainActivity.this);
-        scan.setFlash(false);
-        scan.stopCamera();
+         */
     }
 }
 
