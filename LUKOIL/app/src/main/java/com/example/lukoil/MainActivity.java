@@ -4,16 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.textclassifier.TextLinks;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zxing.R;
@@ -27,6 +22,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -40,9 +36,8 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     public static String info;
     private Button btn, rescan;
     private ImageButton flash;
-    private boolean flash_state = false;
+    private boolean flash_state = false, onResult = false;
     private String id1, id2, id3;
-    private TextView txt;
     private ImageView ima0, ima1, ima2;
 
     @Override
@@ -60,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         scan.setResultHandler(MainActivity.this);
                         scan.startCamera();
+                        scan.cancelLongPress();
+
                     }
 
                     @Override
@@ -83,49 +80,53 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
     @Override
     public void handleResult(Result rawResult) {
+
         String res = rawResult.getText();
-        txt.setText(res);
-        scan.resumeCameraPreview(MainActivity.this);
+        flash.setVisibility(View.GONE);
+        rescan.setText("Next");
+        rescan.setVisibility(View.VISIBLE);
+
         if (res.length() == 36) {
             switch (res.charAt(0)) {
                 case '0':                                   //код под крышкой
                     id1 = res;
-                    ima0.setVisibility(View.GONE);
-                    txt.setText("Под крышкой");
+                    ima0.setImageResource(R.drawable.lip_bottom_on);
                     break;
                 case '1':                                   //код на крышке
                     id2 = res;
-                    ima1.setVisibility(View.GONE);
-                    txt.setText("На крышке");
+                    ima1.setImageResource(R.drawable.lip_top_on);
                     break;
                 case '2':                                   //код на этикетке
                     id3 = res;
-                    ima2.setVisibility(View.GONE);
-                    txt.setText("На этикетке");
+                    ima2.setImageResource(R.drawable.canister_on);
                     break;
                 default:
-                    txt.setText("Ошибка");
                     break;
             }
-        } else
-            txt.setText("Ошибка");
+        } else{
+            // если код не с канистры Lukoil и её составляющих
+        }
+
 
         if(id1 != null && id2 != null && id3 != null) {
             flash.setVisibility(View.GONE);
-            rescan.setVisibility(View.VISIBLE);
             scan.resumeCameraPreview(MainActivity.this);
             scan.setFlash(false);
             scan.stopCamera();
+            rescan.setText("Rescan");
+            rescan.setVisibility(View.VISIBLE);
+            onResult = true;
             reqResult(id1 + '.' + id2 + '.' + id3);
         }
-    }
+    } //дествия, совершаемые при обнаружении qr кода
 
     public void click(View view) {
+        onResult = false;
         Intent intent = new Intent(MainActivity.this, ResultActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         this.finish();
-    }
+    } //обработчик нажатия на кнопку tap to see the result
 
     public void rescan(View view) {
         rescan.setVisibility(View.GONE);
@@ -133,16 +134,18 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         btn.setClickable(false);
         btn.setText("Scanning...");
 
-        scan.startCamera();
+        if(onResult) {
+            scan.startCamera();
+            ima0.setImageResource(R.drawable.lip_bottom);
+            ima1.setImageResource(R.drawable.ilp_top);
+            ima2.setImageResource(R.drawable.canister);
+            onResult = false;
+        } else
+            scan.resumeCameraPreview(MainActivity.this);
 
         if(flash_state)
             scan.setFlash(true);
-        //
-        ima0.setVisibility(View.VISIBLE);
-        ima1.setVisibility(View.VISIBLE);
-        ima2.setVisibility(View.VISIBLE);
-        //
-    }
+    } //обработчик нажатия на кнопку rescan(next)
 
     public void flash_btn(View view){
         if(flash_state){
@@ -154,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             scan.setFlash(true);
             flash_state = true;
         }
-    }
+    } //обработчик нажатия на фонарик
 
     @Override
     protected void onUserLeaveHint() {
@@ -167,16 +170,14 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         btn = (Button)findViewById(R.id.button2);
         rescan = (Button)findViewById(R.id.btnRescan);
         flash = (ImageButton)findViewById(R.id.flash);
-
         //
-        txt = (TextView)findViewById(R.id.test_info);
-        ima0 = findViewById(R.id.ima0);
-        ima1 = findViewById(R.id.ima1);
-        ima2 = findViewById(R.id.ima2);
+        ima0 = (ImageView)findViewById(R.id.ima0);
+        ima1 = (ImageView)findViewById(R.id.ima1);
+        ima2 = (ImageView)findViewById(R.id.ima2);
         //
         rescan.setVisibility(View.GONE);
         btn.setClickable(false);
-    }
+    } //инициализация пользовательского интерфейса
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -190,9 +191,9 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
-    }
+    } //отвечает за полноэкранный режим
 
-    private void reqResult(String id){
+    private void reqResult(String id) {
 
         id1 = id2 = id3 = null;
         OkHttpClient client = new OkHttpClient();
@@ -221,16 +222,16 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
             @Override
             public void onFailure(Call call, IOException e) {
-                txt.setText("Bad connection");
+                // не удалось установить соединение с сервером
             }
         });
-        /* error
+    } //отправка запроса, при наличии всех qr кодов с канистры
 
-
-         */
-    }
+    public void infoBtn(View view) {
+        onResult = false;
+        Intent intent = new Intent(MainActivity.this, info_page.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        this.finish();
+    } //обработчик нажатия на кнопку information
 }
-
-/*
-
-*/

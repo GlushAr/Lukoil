@@ -17,7 +17,7 @@ public class ResultActivity extends AppCompatActivity {
 
     private TextView txt, name_info;
     private ImageView img;
-    private String name, information;
+    private String name, produced, place, number, batch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,28 +35,31 @@ public class ResultActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         this.finish();
-    }
+    } //обработчик нажатия на кнопку again
 
     private void initUI() {
         txt = (TextView)findViewById(R.id.textView2);
         name_info = (TextView)findViewById(R.id.name);
         img = (ImageView)findViewById(R.id.imageView);
-    }
+    } //инициализация пользовательского интерфейса
 
     private void JsonParser(String jsonInfo) {
         try {
             JSONObject json = new JSONObject(jsonInfo);
             name = json.getString("TypeName");
-            information = json.getString("Produced");
+            produced = json.getString("Produced");
+            place = json.getString("Place");
+            number = json.getString("Number");
+            batch = json.getString("Batch");
 
             name_info.setText(name);
-            txt.setText(information);
+            txt.setText("Produced: " + produced + '\n' + "Place: " + place + '\n' + "Number: " + number + '\n' + "Batch:" + batch);
 
         } catch (JSONException e){
-            txt. setText(e.getMessage());
+            txt.setText(e.getMessage());
         }
 
-    }
+    } //получение информации из JSON'а
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -70,5 +73,5 @@ public class ResultActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
-    }
+    } //отвечает за полноэкранный режим
 }
