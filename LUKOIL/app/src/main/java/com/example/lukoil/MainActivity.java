@@ -55,8 +55,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         scan.setResultHandler(MainActivity.this);
                         scan.startCamera();
-                        scan.cancelLongPress();
-
                     }
 
                     @Override
@@ -90,15 +88,15 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             switch (res.charAt(0)) {
                 case '0':                                   //код под крышкой
                     id1 = res;
-                    ima0.setImageResource(R.drawable.lip_bottom_on);
+                    ima0.setAlpha(0.1f);
                     break;
                 case '1':                                   //код на крышке
                     id2 = res;
-                    ima1.setImageResource(R.drawable.lip_top_on);
+                    ima1.setAlpha(0.1f);
                     break;
                 case '2':                                   //код на этикетке
                     id3 = res;
-                    ima2.setImageResource(R.drawable.canister_on);
+                    ima2.setAlpha(0.1f);;
                     break;
                 default:
                     break;
@@ -136,9 +134,9 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         if(onResult) {
             scan.startCamera();
-            ima0.setImageResource(R.drawable.lip_bottom);
-            ima1.setImageResource(R.drawable.ilp_top);
-            ima2.setImageResource(R.drawable.canister);
+            ima0.setAlpha(1f);
+            ima1.setAlpha(1f);
+            ima2.setAlpha(1f);
             onResult = false;
         } else
             scan.resumeCameraPreview(MainActivity.this);
