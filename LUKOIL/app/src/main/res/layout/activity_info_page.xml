@@ -14,19 +14,19 @@
         android:background="@drawable/background"
         tools:context="com.example.lukoil.info_page"
         tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp" >
+        tools:layout_editor_absoluteY="1dp">
 
         <ImageView
             android:id="@+id/imageView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="97dp"
+            android:layout_height="83dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.169"
+            app:layout_constraintHorizontal_bias="0.153"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.057"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+            app:layout_constraintVertical_bias="0.035"
+            app:srcCompat="@drawable/ic_luk_oil_logo" />
 
         <ImageButton
             android:id="@+id/imageButton2"
@@ -38,15 +38,17 @@
             android:onClick="back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.435"
+            app:layout_constraintHorizontal_bias="0.15"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.055"
+            app:layout_constraintVertical_bias="0.04000002"
             app:srcCompat="@drawable/ic_left_arrow" />
 
         <ScrollView
-            android:layout_width="405dp"
+            android:layout_width="407dp"
             android:layout_height="617dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -57,8 +59,10 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView"
-                android:textSize="30sp" />
+                android:text='Данное приложение предназначено для проверки подлинности продукции компании Lukoil. Для того чтобы проверить товар поочередно отсканируйте все qr-коды расположенные на ней (qr-коды расположены: на боковой поверхности канистры, на крышке и под крышкой). После сканирования дождитесь ответа от сервера. На кнопке снизу появится надпись "Инфомация о товаре", сообщающая о том, что канистра прошла проверку на подлинность, либо надпись "Ошибка", информирующая о подделке.'
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp"
+                app:fontFamily="@font/istok_web" />
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

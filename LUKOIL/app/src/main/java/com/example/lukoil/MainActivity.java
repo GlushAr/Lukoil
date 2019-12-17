@@ -81,71 +81,84 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         String res = rawResult.getText();
         flash.setVisibility(View.GONE);
-        rescan.setText("Next");
         rescan.setVisibility(View.VISIBLE);
+        btn.setClickable(true);
 
         if (res.length() == 36) {
             switch (res.charAt(0)) {
                 case '0':                                   //код под крышкой
                     id1 = res;
-                    ima0.setAlpha(0.1f);
+                    ima0.setImageResource(R.drawable.ic_222a);
                     break;
                 case '1':                                   //код на крышке
                     id2 = res;
-                    ima1.setAlpha(0.1f);
+                    ima1.setImageResource(R.drawable.ic_333a);
                     break;
                 case '2':                                   //код на этикетке
                     id3 = res;
-                    ima2.setAlpha(0.1f);;
+                    ima2.setImageResource(R.drawable.ic_111a);
                     break;
                 default:
                     break;
             }
         } else{
             // если код не с канистры Lukoil и её составляющих
+            btn.setText("Неверный код");
         }
 
 
         if(id1 != null && id2 != null && id3 != null) {
+            btn.setText("Ожидание ответа от сервера");
             flash.setVisibility(View.GONE);
             scan.resumeCameraPreview(MainActivity.this);
             scan.setFlash(false);
             scan.stopCamera();
-            rescan.setText("Rescan");
             rescan.setVisibility(View.VISIBLE);
             onResult = true;
             reqResult(id1 + '.' + id2 + '.' + id3);
-        }
+        } else
+            btn.setText("Скинировать следующую");
     } //дествия, совершаемые при обнаружении qr кода
 
     public void click(View view) {
-        onResult = false;
-        Intent intent = new Intent(MainActivity.this, ResultActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        this.finish();
+
+        if(!onResult){
+            rescan.setVisibility(View.GONE);
+            flash.setVisibility(View.VISIBLE);
+            btn.setClickable(false);
+            btn.setText("Сканирование...");
+            scan.resumeCameraPreview(MainActivity.this);
+
+            if(flash_state)
+                scan.setFlash(true);
+
+        } else {
+            onResult = false;
+            Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            this.finish();
+        }
+
     } //обработчик нажатия на кнопку tap to see the result
 
     public void rescan(View view) {
         rescan.setVisibility(View.GONE);
         flash.setVisibility(View.VISIBLE);
         btn.setClickable(false);
-        btn.setText("Scanning...");
-
-        if(onResult) {
-            scan.startCamera();
-            ima0.setAlpha(1f);
-            ima1.setAlpha(1f);
-            ima2.setAlpha(1f);
-            onResult = false;
-        } else
+        btn.setText("Сканирование...");
+        ima0.setImageResource(R.drawable.ic_222aa);
+        ima1.setImageResource(R.drawable.ic_333aa);
+        ima2.setImageResource(R.drawable.ic_111aa);
+        if (!onResult)
             scan.resumeCameraPreview(MainActivity.this);
-
-        if(flash_state)
-            scan.setFlash(true);
+        else
+            scan.startCamera();
+        onResult = false;
+        id1 = id2 = id3 = null;
     } //обработчик нажатия на кнопку rescan(next)
 
-    public void flash_btn(View view){
+    public void flash_btn(View view) {
         if(flash_state){
             flash.setImageResource(R.drawable.ic_flash_off);
             scan.setFlash(false);
@@ -211,9 +224,9 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                     json.getString("TypeName");
                     //
                     btn.setClickable(true);
-                    btn.setText("Tap to see the info");
+                    btn.setText("Нажмите для промотра информации");
                 } catch (JSONException e){
-                    btn.setText("Error");
+                    btn.setText("Ошибка");
                     btn.setClickable(false);
                 }
             }
@@ -221,6 +234,9 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             @Override
             public void onFailure(Call call, IOException e) {
                 // не удалось установить соединение с сервером
+                btn.setText("Не удалось установить соединение с сервером");
+                rescan.setVisibility(View.VISIBLE);
+                //почему-то вылетает, независимо от действий (при отсутствии интернета)
             }
         });
     } //отправка запроса, при наличии всех qr кодов с канистры

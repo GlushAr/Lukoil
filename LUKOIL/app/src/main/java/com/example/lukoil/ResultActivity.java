@@ -1,9 +1,13 @@
 package com.example.lukoil;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,7 +19,7 @@ import org.json.JSONObject;
 
 public class ResultActivity extends AppCompatActivity {
 
-    private TextView txt, name_info;
+    private TextView txt;
     private ImageView img;
     private String name, produced, place, number, batch;
 
@@ -39,7 +43,6 @@ public class ResultActivity extends AppCompatActivity {
 
     private void initUI() {
         txt = (TextView)findViewById(R.id.textView2);
-        name_info = (TextView)findViewById(R.id.name);
         img = (ImageView)findViewById(R.id.imageView);
     } //инициализация пользовательского интерфейса
 
@@ -51,9 +54,20 @@ public class ResultActivity extends AppCompatActivity {
             place = json.getString("Place");
             number = json.getString("Number");
             batch = json.getString("Batch");
+            byte[] decodedStr = Base64.decode(json.getString("Image"), Base64.DEFAULT);
 
-            name_info.setText(name);
-            txt.setText("Produced: " + produced + '\n' + "Place: " + place + '\n' + "Number: " + number + '\n' + "Batch:" + batch);
+            Bitmap bmp = BitmapFactory.decodeByteArray(decodedStr, 0, decodedStr.length);
+            img.setImageBitmap(bmp);
+
+            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) img.getLayoutParams();
+
+            params.width -= 70;
+            params.height -= 70;
+            params.bottomToBottom = 40;
+            params.bottomToTop = 40;
+            img.setLayoutParams(params);
+
+            txt.setText("Название: "+ name + '\n' + "Дата выпуска: " + produced + '\n' + "Место производства: " + place + '\n' + "Серийный номер: " + number + '\n' + "Партия:" + batch);
 
         } catch (JSONException e){
             txt.setText(e.getMessage());

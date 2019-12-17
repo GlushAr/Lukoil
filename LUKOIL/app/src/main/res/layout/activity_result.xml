@@ -27,13 +27,14 @@
         android:layout_marginRight="35sp"
         android:background="@drawable/btn_style"
         android:onClick="click"
-        android:text="Again"
+        android:text="Заново"
         android:textColor="#dbd5d6"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.963" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -47,15 +48,15 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="102dp"
-        android:layout_height="122dp"
+        android:layout_width="91dp"
+        android:layout_height="99dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.154"
-        app:srcCompat="@drawable/arm_vn_4l_kanistra_rakurs_230x395" />
+        app:srcCompat="@drawable/background_splash" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -63,29 +64,23 @@
         android:layout_height="351dp"
         android:layout_marginTop="1dp"
 
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.173">
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="ЛУКОЙЛ GENESIS ARMORTECH VN 5W-30 – полностью синтетическое моторное масло премиум класса для применения в бензиновых и дизельных двигателях легковых и легких грузовых автомобилей, в том числе оборудованных каталитическими нейтрализаторами и фильтрами сажевых частиц (DPF).  Подходит для автомобилей: AUDI, BMW,CITROEN, HONDA, HYUNDAI, INFINITI, KIA, MERCEDES-BENZ, MINI, PEUGEOT, PORSCHE, SEAT, SKODA, SSANGYONG, VOLKSWAGEN."
             android:textColor="@color/colorPrimary"
-            android:textSize="30sp" />
+            android:textSize="25sp"
+            app:fontFamily="@font/istok_web" />
     </ScrollView>
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="293dp"
-        android:layout_height="73dp"
-        android:text="ЛУКОЙЛ GENESIS ARMORTECH VN 5W-30"
-        android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
