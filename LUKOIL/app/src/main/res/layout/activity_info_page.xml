@@ -47,8 +47,6 @@
         <ScrollView
             android:layout_width="407dp"
             android:layout_height="617dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,6 +57,9 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingRight="50dp"
+                android:paddingBottom="10dp"
                 android:text='Данное приложение предназначено для проверки подлинности продукции компании Lukoil. Для того чтобы проверить товар поочередно отсканируйте все qr-коды расположенные на ней (qr-коды расположены: на боковой поверхности канистры, на крышке и под крышкой). После сканирования дождитесь ответа от сервера. На кнопке снизу появится надпись "Инфомация о товаре", сообщающая о том, что канистра прошла проверку на подлинность, либо надпись "Ошибка", информирующая о подделке.'
                 android:textColor="@color/colorPrimary"
                 android:textSize="25sp"
