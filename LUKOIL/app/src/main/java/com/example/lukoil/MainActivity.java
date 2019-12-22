@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         String res = rawResult.getText();
         flash.setVisibility(View.GONE);
         rescan.setVisibility(View.VISIBLE);
-        btn.setClickable(true);
 
         if (res.length() == 36) {
             switch (res.charAt(0)) {
@@ -99,11 +98,12 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
                     ima2.setImageResource(R.drawable.ic_111a);
                     break;
                 default:
+                    Toast.makeText(getApplicationContext(), "Неверный qr-код", Toast.LENGTH_SHORT).show();
                     break;
             }
         } else{
             // если код не с канистры Lukoil и её составляющих
-            btn.setText("Неверный код");
+            Toast.makeText(getApplicationContext(), "Неверный qr-код", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -116,8 +116,10 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             rescan.setVisibility(View.VISIBLE);
             onResult = true;
             reqResult(id1 + '.' + id2 + '.' + id3);
-        } else
+        } else {
             btn.setText("Скинировать следующую");
+            btn.setClickable(true);
+        }
     } //дествия, совершаемые при обнаружении qr кода
 
     public void click(View view) {
